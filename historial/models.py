@@ -1,39 +1,43 @@
 from django.db import models
-
-# Create your models here.
-
-from django.db import models
 from django.contrib import admin
 
-class Paciente(models.Model):
+class Doctor(models.Model):
     nombre = models.CharField(max_length=40)
     apellido = models.CharField(max_length=40)
     direccion = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
-
+    especialidad  = models.CharField(max_length=30)
     def __str__(self):
         return self.nombre
 
-class Doctor(models.Model):
+class Enfermedad(models.Model):
+    nombre = models.CharField(max_length=40)
+    def __str__(self):
+        return self.nombre
+
+class Paciente(models.Model):
     nombre    = models.CharField(max_length=60)
     apellido = models.CharField(max_length=50)
-    especialidad  = models.CharField(max_length=30)
-    Padecimientos   = models.ManyToManyField(Paciente, through='Padecimiento')
+    fecha_nacimiento = models.DateField()
     def __str__(self):
         return self.nombre
 
-class Padecimiento (models.Model):
+class Consulta (models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    descripcion = models.CharField(max_length=120)
+    enfermedad = models.ForeignKey(Enfermedad, on_delete=models.CASCADE)
+    descripcion_padecimiento = models.CharField(max_length=120)
     fecha_padecimiento = models.DateField()
+    tratamiento    = models.CharField(max_length=60)
 
-class PadecimientoInLine(admin.TabularInline):
-    model = Padecimiento
+class ConsultaInLine(admin.TabularInline):
+    model = Consulta
     extra = 1
 
 class PacienteAdmin(admin.ModelAdmin):
-    inlines = (PadecimientoInLine,)
+    inlines = (ConsultaInLine,)
+
+class EnfermedadAdmin (admin.ModelAdmin):
+    inlines = (ConsultaInLine,)
 
 class DoctorAdmin (admin.ModelAdmin):
-    inlines = (PadecimientoInLine,)
+    inlines = (ConsultaInLine,)
