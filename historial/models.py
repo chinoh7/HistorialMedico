@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib import admin
+from django.shortcuts import render
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Doctor(models.Model):
     nombre = models.CharField(max_length=40)
