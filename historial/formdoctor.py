@@ -1,5 +1,15 @@
 from django import forms
-from .models import Paciente, Doctor, Consulta
+from .models import Persona,Empleado
+from django.contrib.admin import widgets
+from django.forms import extras
+#form Cliente
+#class Form_RegistroEmpleado_Persona(forms.ModelForm):
+#    class Meta:
+#        model=Persona
+#        exclude=('estado_persona',)
+#        widgets = {
+#            'fecha_nacimiento_persona': forms.DateInput(attrs={'class': 'datepicker'}),
+#        }
 
 
 class Form_NuevoDoctor(forms.ModelForm):

@@ -14,6 +14,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
+
+MEDIA_ROOT = PROJECT_ROOT + '/archivos/'
+MEDIA_URL = '/archivos/'  #put whatever you want that when url is rendered it will be /archivos_varios/imagename.jpg
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,6 +32,35 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL=reverse_lazy('login')
+LOGIN_REDIRECT_URL=reverse_lazy('post_list')
+LOGOUT_URL=reverse_lazy('logout')
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'historial': { # for your app
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django': { # for all django-internal messages
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 # Application definition
 
 INSTALLED_APPS = (

@@ -5,10 +5,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 class Doctor(models.Model):
+    idempleado = models.AutoField(db_column='idEmpleado', primary_key=True)
     nombre = models.CharField(max_length=40)
     apellido = models.CharField(max_length=40)
     direccion = models.CharField(max_length=100)
     especialidad  = models.CharField(max_length=30)
+    usuario_doctor = models.ForeignKey('auth.User')
     def __str__(self):
         return self.nombre
 

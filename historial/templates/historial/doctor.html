@@ -1,0 +1,66 @@
+{% extends 'historial/base.html' %}
+{% load staticfiles %}
+<!--se añadió la fila anterior-->
+{% block titulo %}
+ Nuevo Doctor
+{% endblock %}
+    {% block styles %}
+      <link type="text/css" rel="stylesheet" href="{% static "css/formularios.css" %}">
+    {% endblock %}
+      {% block encabezado %}Nuevo Doctor{% endblock %}
+    {% block content %}
+
+        <form method="POST" class="post-form" enctype="multipart/form-data">
+          {% csrf_token %}
+            <!--p><label>Nombres: </label>{{ form.nombres_persona }}</p-->
+
+            <div class="row" style="margin-bottom: 0px;">
+              <div  class="col l6 m12 s12">
+
+              <div class"row">
+              <label for="id_nombre"><h6>Nombres:</h6> </label>{{ form.nombre }}
+              </div>
+              <div class"row">
+                <label for="id_apellido"><h6>Apellidos:</h6> </label>{{ form.apellido }}
+              </div>
+
+                <div class"row">
+                    <label for="id_direccion"><h6>Direccion:</h6> </label>{{ form.direccion }}
+                </div>
+                <div class"row">
+
+                <label for="id_especialidad"><h6>Especialidad:</h6> </label>{{ form.especialidad}}
+                </div>
+              <!--  {{ form.as_p }}-->
+              </div>
+              <!--datos de empleado-->
+              <div class="col l6 m12 s12">
+                  <label for="id_username"><h6>Usuario:</h6> </label>{{ form_usuario.username}}
+
+                  <label for="id_password"><h6>Contraseña:</h6> </label>{{ form_usuario.password}}
+                  <br/>
+                  <button  type="submit" class="save btn btn-default">Guardar</button>
+                  {% if form.errors%}
+                    <p>{{form.errors}}</p>
+                  {% endif %}
+                  {% if form_usuario.errors%}
+                    <p>{{form_usuario.errors}}</p>
+                  {% endif %}
+                  {% if errores%}
+                    <p>{{errores}}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+        </form>
+        <!--script>
+          $(function() {
+            $( ".datepicker" ).datepicker({
+              changeMonth: true,
+              changeYear: true,
+              yearRange: "1900:2020",
+              // You can put more options here.
+            });
+          });
+        </script-->
+{% endblock %}
