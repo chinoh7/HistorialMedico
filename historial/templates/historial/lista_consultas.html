@@ -4,12 +4,15 @@
 
  {% for c in cons %}
      <div>
-        <h1>Doctor: <a href="">{{ c.doctor__nombre }} {{ c.doctor__apellido }}</a></h1>
-        <p>{{ c.paciente__nombre }} {{ c.paciente__apellido }}</p>
+       <h1>Doctor: <a href="">{{ c.doctor__nombre }} {{ c.doctor__apellido }}</a></h1>
+       <h1><u>Doctor:</u> {{ c.doctor__nombre }} {{ c.doctor__apellido }}</h1>
+
+       <p><b>Paciente: </b>{{ c.paciente__nombre }} {{ c.paciente__apellido }}</p>
         <p>{{ c.enfermedad__nombre }}</p>
         <p>{{ c.descripcion_padecimiento }}</p>
         <p>{{ c.fecha_padecimiento }}</p>
         <p>{{ c.tratamiento }}</p>
      </div>
+
  {% endfor %}
 {% endblock content %}

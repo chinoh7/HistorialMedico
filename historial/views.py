@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from .models import Doctor
+from .models import Doctor, Enfermedad
 
 from django.contrib import messages
 from .forms import Form_NuevoDoctor,UserForm
@@ -20,7 +19,12 @@ from django.shortcuts import redirect
 from .models import *
 from django.contrib.auth import login
 
+from historial.models import Paciente, Padecimiento
+from django.utils import timezone
+from .models import Paciente, Padecimiento
 
+from .forms import EnfermedadForm, PacienteForm
+from django.shortcuts import redirect
 # Create your views here.
 @login_required
 def post_list(request):
@@ -31,19 +35,6 @@ def post_list(request):
     #para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
     return render(request, 'historial/lista_consultas.html', {'cons': cons})
 
-
-#def consulta_nueva(request):
-#    if request.method == "POST":
-#        formulario = ConsultaForm(request.POST)
-#        if formulario.is_valid():
-#            pelicula = Paciente.objects.create(nombre=formulario.cleaned_data['nombre'], anio = formulario.cleaned_data['anio'])
-#            for actor_id in request.POST.getlist('doctores'):
-#                actuacion = Consulta(actor_id=actor_id, pelicula_id = pelicula.id)
-#                actuacion.save()
-#            messages.add_message(request, messages.SUCCESS, 'Consulta Guardada Exitosamente')
-#    else:
-#        formulario = ConsultaForm()
-#    return render(request, 'historial/consulta_editar.html', {'formulario': formulario})
 
 def registro_doctor(request):
     if request.method == 'POST':
@@ -69,3 +60,40 @@ def registro_doctor(request):
         form=Form_NuevoDoctor()
         form_usuario=UserForm()
     return render(request, 'historial/doctor.html', {'form': form, 'form_usuario':form_usuario,'errores':var_error})
+
+#------------Nueva Enfermedad--------------------------------
+
+def nueva_enfermedad(request):
+    if request.method == "POST":
+        formulario = EnfermedadForm(request.POST)
+        if formulario.is_valid():
+            post = formulario.save(commit=False)
+            post.save()
+            messages.add_message(request, messages.SUCCESS, 'Enfermedad Guardada Exitosamente')
+            #return redirect('historial/lista_consultas.html', pk=post.pk)
+    else:
+        formulario = EnfermedadForm()
+    return render(request, 'historial/enfermedad_editar.html', {'formulario': formulario})
+
+#-------Nuevo Paciente---------------------
+def nuevo_paciente(request):
+    if request.method == "POST":
+        formulario = PacienteForm(request.POST)
+        if formulario.is_valid():
+            paciente = Paciente.objects.create(nombre=formulario.cleaned_data['nombre'], apellido = formulario.cleaned_data['apellido'], fecha_nacimiento = formulario.cleaned_data['fecha_nacimiento'])
+            for enfermedad_id in request.POST.getlist('enfermedades'):
+                padecimiento = Padecimiento(enfermedad_id=enfermedad_id, paciente_id = paciente.id)
+                padecimiento.save()
+                messages.add_message(request, messages.SUCCESS, 'Paciente Guardado Exitosamente')
+    else:
+        formulario = PacienteForm()
+    return render(request, 'historial/Paciente_editar.html', {'formulario': formulario})
+
+
+#fields = ('nombre', 'apellido', 'fecha_nacimiento','enfermedades')
+#paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+#doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+#enfermedad = models.ForeignKey(Enfermedad, on_delete=models.CASCADE)
+#descripcion_padecimiento = models.CharField(max_length=120)
+#fecha_padecimiento = models.DateField()
+#tratamiento    = models.CharField(max_length=60)
