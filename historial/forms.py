@@ -40,6 +40,22 @@ def __init__ (self, *args, **kwargs):
         self.fields["enfermedades"].help_text = "Ingrese las Enfermedades que padece:"
         self.fields["enfermedades"].queryset = Enfermedad.objects.all()
 
+def post_edit(request, pk):
+    post = get_object_or_404(Postear, pk=pk)
+    if request.method == "POST":
+        formulario = PostearForm(request.POST, instance=post)
+        if formulario.is_valid():
+            post = formulario.save(commit=False)
+            post.autor = request.user
+            post.save()
+            return redirect('blog.views.post_detail', pk=post.pk)
+    else:
+        formulario = PostearForm(instance=post)
+    return render(request, 'blog/editar_articulo.html', {'formulario': formulario})
+
+
+
+
 #---------------------------------------------------
 class ConsultaForm(forms.ModelForm):
 #todos los campos de Pelicula

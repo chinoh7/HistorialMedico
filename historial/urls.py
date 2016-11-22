@@ -14,6 +14,7 @@ urlpatterns = [
         url(r'^nuevaenfermedad/$', views.nueva_enfermedad, name='EnfermedadN'),
         url(r'^nuevopaciente/$', views.nuevo_paciente, name='PacienteN'),
         url(r'^nuevaconsulta/$', views.consulta_nueva, name='ConsultaN'),
+        url(r'^listapacientes/$', views.lista_pacientes, name='PacienteL'),
         #url(r'^nuevoconsulta/$', views.nuevo_paciente, name='ConsultaN'),
 
     ]

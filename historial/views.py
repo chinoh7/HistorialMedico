@@ -44,7 +44,12 @@ def post_list(request):
 #    #para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
 #    return render(request, 'historial/lista_consultas.html', {'cons': cons})
 
+def lista_pacientes(request):
+	posts = Paciente.objects.all()
+	return render(request, 'historial/listar_pacientes.html',{'posts': posts})
 
+
+#--------------------------------------------------------------------------------------
 def registro_doctor(request):
     if request.method == 'POST':
         form=Form_NuevoDoctor(request.POST)
@@ -98,6 +103,22 @@ def nuevo_paciente(request):
         formulario = PacienteForm()
     return render(request, 'historial/ingresar_paciente.html', {'formulario': formulario})
 
+#----------------editar paciente
+def editar_paciente(request, pk):
+    post = get_object_or_404(Paciente, pk=pk)
+    if request.method == "POST":
+        formulario = PacienteForm(request.POST, instance=post)
+        if formulario.is_valid():
+            post = formulario.save(commit=False)
+            post.autor = request.user
+            post.save()
+            return redirect('blog.views.lista_pacientes', pk=post.pk)
+    else:
+        formulario = PostearForm(instance=post)
+    return render(request, 'blog/editar_articulo.html', {'formulario': formulario})
+
+
+
 #-----------------Nueva Consulta
 
 def consulta_nueva(request):
@@ -107,6 +128,7 @@ def consulta_nueva(request):
             doctor_logueado=Doctor.objects.get(usuario_doctor=request.user) #este es el usuario que está logueado en el sistema
             consulta = form_consulta.save(commit=False)
             consulta.doctor=doctor_logueado
+            consulta.save()
             messages.add_message(request, messages.SUCCESS, 'Consulta Guardada Exitosamente')
     else:
         doctor_logueado=Doctor.objects.get(usuario_doctor=request.user) #este es el usuario que está logueado en el sistema

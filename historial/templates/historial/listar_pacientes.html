@@ -1,0 +1,19 @@
+{% extends 'historial/base.html' %}
+
+ {% block content %}
+     {% for Paciente in posts %}
+          <div class="post">
+              <div class="date">
+               </div>
+                 <h1><a href="">{{ Paciente.nombre }}</a></h1>
+                 <p><b>Apellido: </b>  {{ Paciente.apellido|linebreaksbr }}</p>
+                 <p><b>Fecha de nacimiento: </b>{{ Paciente.fecha_nacimiento|linebreaksbr }}</p>
+         </div>
+                {% endfor %}
+{% endblock content %}
+
+nombre    = models.CharField(max_length=60)
+apellido = models.CharField(max_length=50)
+fecha_nacimiento = models.DateField()
+enfermedades = models.ManyToManyField(Enfermedad, through='Padecimiento')
+def __str__(self):
