@@ -53,7 +53,7 @@ def __init__ (self, *args, **kwargs):
         self.fields["consultas"].queryset = Doctor.objects.all()
         self.fields["consultas"].queryset = Paciente.objects.all()
         self.fields["consultas"].queryset = Enfermedad.objects.all()
-        self.fields["consultas  "].widget = forms.widgets.CheckboxSelectMultiple()
+        self.fields["doctore  "].widget = forms.widgets.CheckboxSelectMultiple()
 #Podemos usar un texto de ayuda en el widget
         self.fields["consultas"].help_text = "Ingrese los Actores que participaron en la película"
 #En este caso le indicamos que nos muestre todos los actores, pero aquí podríamos filtrar datos si fuera necesario
