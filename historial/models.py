@@ -31,13 +31,16 @@ class Doctor(models.Model):
     apellido = models.CharField(max_length=40)
     direccion = models.CharField(max_length=100)
     especialidad  = models.CharField(max_length=30)
-    pacientes = models.ManyToManyField(Paciente, through='Consulta')
+#    pacientes = models.ManyToManyField(Paciente, through='Consulta')
     usuario_doctor = models.ForeignKey('auth.User')
     def __str__(self):
-        return self.nombre
+        return '%s %s' % (self.nombre, self.apellido)
+    #    return self.nombre
+
 
 class Consulta (models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    #doctor = models.ForeignKey('auth.User')
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     enfermedad = models.ForeignKey(Enfermedad, on_delete=models.CASCADE)
     descripcion_padecimiento = models.CharField(max_length=120)
@@ -48,14 +51,15 @@ class ConsultaInLine(admin.TabularInline):
     model = Consulta
     extra = 1
 
+class DoctorAdmin (admin.ModelAdmin):
+    inlines = (ConsultaInLine,)
+
 class PacienteAdmin(admin.ModelAdmin):
     inlines = (ConsultaInLine,)
 
 class EnfermedadAdmin (admin.ModelAdmin):
     inlines = (ConsultaInLine,)
 
-class DoctorAdmin (admin.ModelAdmin):
-    inlines = (ConsultaInLine,)
 
 #-----------------------------------------------------
 

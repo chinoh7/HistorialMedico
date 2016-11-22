@@ -13,5 +13,7 @@ urlpatterns = [
         url(r'^nuevodoctor/$',views.registro_doctor,name='nuevo_doctor'),
         url(r'^nuevaenfermedad/$', views.nueva_enfermedad, name='EnfermedadN'),
         url(r'^nuevopaciente/$', views.nuevo_paciente, name='PacienteN'),
+        url(r'^nuevaconsulta/$', views.consulta_nueva, name='ConsultaN'),
+        #url(r'^nuevoconsulta/$', views.nuevo_paciente, name='ConsultaN'),
 
     ]

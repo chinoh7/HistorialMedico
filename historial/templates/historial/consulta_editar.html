@@ -1,0 +1,21 @@
+{% extends 'historial/base.html' %}
+{% load staticfiles %}
+{% block titulo %}
+ Crear consulta
+{% endblock %}
+    {% block encabezado %}Crear consulta{% endblock %}
+    {% block content %}
+    <form id="formulario_consultas" method="POST" class="post-form">
+      {% csrf_token %}
+      <div class="row" style="margin-bottom: 0px;">
+        <div class="col l6 m12 s12">
+          <label for="id_paciente"><h6>Paciente:</h6> </label>{{ form_consulta.paciente}}
+          <label for="id_enfermedad"><h6>Enfermedad:</h6> </label>{{ form_consulta.enfermedad}}
+          <label for="id_descripcion_padecimiento"><h6>Padecimiento: </h6> </label>{{ form_consulta.descripcion_padecimiento}}
+          <label for="id_fecha_padecimiento"><h6>Fecha: </h6> </label>{{ form_consulta.fecha_padecimiento}}
+          <label for="id_tratamiento"><h6>Tratamiento: </h6> </label>{{ form_consulta.tratamiento}}
+          <button  type="submit" class="save btn btn-default">Guardar</button>
+        </div>
+      </div>
+    </form>
+  {% endblock %}

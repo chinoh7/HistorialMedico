@@ -25,15 +25,24 @@ from .models import Paciente, Padecimiento
 
 from .forms import EnfermedadForm, PacienteForm
 from django.shortcuts import redirect
+from .forms import *
+from .models import *
 # Create your views here.
 @login_required
 def post_list(request):
     doctor_logueado=Doctor.objects.get(usuario_doctor=request.user) #este es el usuario que está logueado en el sistema
-    #doctor_logueado=Empleado.objects.get(usuario_doctor=request.user)
     cons = Consulta.objects.filter(doctor=doctor_logueado).values('doctor__nombre','doctor__apellido','paciente__nombre','paciente__apellido','enfermedad__nombre','descripcion_padecimiento','fecha_padecimiento','tratamiento','pk').order_by('pk')
-    #cons = Consulta.objects.filter(doctor=1).values('doctor__nombre','doctor__apellido','paciente__nombre','paciente__apellido','enfermedad__nombre','descripcion_padecimiento','fecha_padecimiento','tratamiento','pk').order_by('pk')
     #para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
     return render(request, 'historial/lista_consultas.html', {'cons': cons})
+
+
+#def post_list(request):
+#    doctor_logueado=Doctor.objects.get(usuario_doctor=request.user) #este es el usuario que está logueado en el sistema
+#    #doctor_logueado=Empleado.objects.get(usuario_doctor=request.user)
+#    cons = Consulta.objects.filter(doctor=doctor_logueado).values('doctor__nombre','doctor__apellido','paciente__nombre','paciente__apellido','enfermedad__nombre','descripcion_padecimiento','fecha_padecimiento','tratamiento','pk').order_by('pk')
+#    #cons = Consulta.objects.filter(doctor=1).values('doctor__nombre','doctor__apellido','paciente__nombre','paciente__apellido','enfermedad__nombre','descripcion_padecimiento','fecha_padecimiento','tratamiento','pk').order_by('pk')
+#    #para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
+#    return render(request, 'historial/lista_consultas.html', {'cons': cons})
 
 
 def registro_doctor(request):
@@ -87,8 +96,25 @@ def nuevo_paciente(request):
                 messages.add_message(request, messages.SUCCESS, 'Paciente Guardado Exitosamente')
     else:
         formulario = PacienteForm()
-    return render(request, 'historial/Paciente_editar.html', {'formulario': formulario})
+    return render(request, 'historial/ingresar_paciente.html', {'formulario': formulario})
 
+#-----------------Nueva Consulta
+
+def consulta_nueva(request):
+    if request.method == "POST":
+        form_consulta = Form_Consulta(request.POST)
+        if form_consulta.is_valid():
+            doctor_logueado=Doctor.objects.get(usuario_doctor=request.user) #este es el usuario que está logueado en el sistema
+            consulta = form_consulta.save(commit=False)
+            consulta.doctor=doctor_logueado
+            messages.add_message(request, messages.SUCCESS, 'Consulta Guardada Exitosamente')
+    else:
+        doctor_logueado=Doctor.objects.get(usuario_doctor=request.user) #este es el usuario que está logueado en el sistema
+        form_consulta = Form_Consulta()
+        #Lo siguiente sirve para filtrar lo que se muestra en los combobox, se debe colocar también en el if, porque al recargar la página el filtro se eliminaría, por eso se debe agregar también ahí, para que vuelva a filtrar.
+        #form_consulta.fields["paciente"].queryset = Paciente.objects.filter(estado_paciente=1)
+    return render(request, 'historial/consulta_editar.html', {'form_consulta': form_consulta})
+#----------------------------------------------------------------
 
 #fields = ('nombre', 'apellido', 'fecha_nacimiento','enfermedades')
 #paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)

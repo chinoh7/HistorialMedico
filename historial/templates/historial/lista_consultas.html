@@ -1,5 +1,5 @@
 {% extends 'historial/base.html' %}
-
+{% load staticfiles %}
  {% block content %}
 
  {% for c in cons %}
@@ -8,11 +8,10 @@
        <h1><u>Doctor:</u> {{ c.doctor__nombre }} {{ c.doctor__apellido }}</h1>
 
        <p><b>Paciente: </b>{{ c.paciente__nombre }} {{ c.paciente__apellido }}</p>
-        <p>{{ c.enfermedad__nombre }}</p>
-        <p>{{ c.descripcion_padecimiento }}</p>
-        <p>{{ c.fecha_padecimiento }}</p>
-        <p>{{ c.tratamiento }}</p>
+       <p><b>Enfermedad: </b>{{ c.enfermedad__nombre }}</p>
+       <p><b>Padecimiento: </b>{{ c.descripcion_padecimiento }}</p>
+       <p><b>Fecha: </b>{{ c.fecha_padecimiento }}</p>
+       <p><b>Tratamiento: </b>{{ c.tratamiento }}</p>
      </div>
-
  {% endfor %}
 {% endblock content %}
