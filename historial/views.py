@@ -45,6 +45,7 @@ def post_list(request):
 #    return render(request, 'historial/lista_consultas.html', {'cons': cons})
 
 #--------------------------------------------------------------------------------------
+@login_required
 def registro_doctor(request):
     if request.method == 'POST':
         form=Form_NuevoDoctor(request.POST)
@@ -71,14 +72,17 @@ def registro_doctor(request):
     return render(request, 'historial/doctor.html', {'form': form, 'form_usuario':form_usuario,'errores':var_error})
 
 #------------Nueva Enfermedad--------------------------------
+@login_required
 def lista_enfermedades(request):
 	posts = Enfermedad.objects.all()
 	return render(request, 'historial/listar_enfermedades.html',{'posts': posts})
 
+@login_required
 def detalle_enfermedad(request, pk):
         post = get_object_or_404(Enfermedad, pk=pk)
         return render(request, 'historial/detalle_enfermedad.html', {'Enfermedad': post})
 
+@login_required
 def nueva_enfermedad(request):
     if request.method == "POST":
         formulario = EnfermedadForm(request.POST)
@@ -91,7 +95,7 @@ def nueva_enfermedad(request):
         formulario = EnfermedadForm()
     return render(request, 'historial/enfermedad_editar.html', {'formulario': formulario})
 
-
+@login_required
 def editar_enfermedad(request, pk):
     post = get_object_or_404(Enfermedad, pk=pk)
     if request.method == "POST":
@@ -111,12 +115,14 @@ def editar_enfermedad(request, pk):
 #para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
 #return render(request, 'historial/lista_consultas.html', {'cons': cons})
 
+@login_required
 def lista_pacientes(request):
         postsp = Paciente.objects.all()
         #postsp = Paciente.objects.values('paciente__nombre','paciente__apellido','enfermedad__nombre').order_by('paciente__nombre')
         return render(request, 'historial/listar_pacientes.html',{'postsp': postsp})
 
 #-------Nuevo Paciente---------------------
+@login_required
 def nuevo_paciente(request):
     if request.method == "POST":
         formulario = PacienteForm(request.POST)
@@ -131,11 +137,13 @@ def nuevo_paciente(request):
     return render(request, 'historial/ingresar_paciente.html', {'formulario': formulario})
 
 #-------------------detalle paciente
+@login_required
 def detalle_paciente(request, pk):
         postp = get_object_or_404(Paciente, pk=pk)
         return render(request, 'historial/detalle_paciente.html', {'Paciente': postp})
 
 #----------------editar paciente
+@login_required
 def editar_paciente(request, pk):
     post = get_object_or_404(Paciente, pk=pk)
     if request.method == "POST":
@@ -150,9 +158,8 @@ def editar_paciente(request, pk):
     return render(request, 'historial/editar_paciente.html', {'formulario': formulario})
 
 
-
 #-----------------Nueva Consulta
-
+@login_required
 def consulta_nueva(request):
     if request.method == "POST":
         form_consulta = Form_Consulta(request.POST)
