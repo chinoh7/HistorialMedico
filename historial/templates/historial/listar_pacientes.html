@@ -1,13 +1,14 @@
 {% extends 'historial/basepacientes.html' %}
 
  {% block content %}
-     {% for Paciente in posts %}
+     {% for Paciente in postsp %}
           <div class="post">
               <div class="date">
                </div>
-                 <h1><a href="">{{ Paciente.nombre }}</a></h1>
+                 <h1><a href="{% url 'historial.views.detalle_paciente' pk=Paciente.pk%}">{{ Paciente.nombre }}</a></h1>
                  <p><b>Apellido: </b>  {{ Paciente.apellido|linebreaksbr }}</p>
                  <p><b>Fecha de nacimiento: </b>{{ Paciente.fecha_nacimiento|linebreaksbr }}</p>
+                 <p><b>Enfermedad: </b>{{ padecimiento.nombre|linebreaksbr }}</p>
          </div>
                 {% endfor %}
 {% endblock content %}

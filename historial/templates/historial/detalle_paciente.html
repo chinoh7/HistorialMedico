@@ -1,0 +1,13 @@
+{% extends 'historial/basepacientes.html' %}
+
+  {% block content %}
+      <div class="date">
+      {% if Paciente.nombre %}
+          {{ Paciente.nombre}}
+      {% endif %}
+      <a class="btn btn-default" href="{% url 'editar_paciente' pk=Paciente.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+      </div>
+      <h1>{{ Paciente.nombre }}</h1>
+      <h1>{{ Paciente.apellido }}</h1>
+      <h1>{{ Paciente.fecha_nacimiento }}</h1>
+  {% endblock %}

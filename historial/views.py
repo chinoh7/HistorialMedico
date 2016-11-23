@@ -44,11 +44,6 @@ def post_list(request):
 #    #para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
 #    return render(request, 'historial/lista_consultas.html', {'cons': cons})
 
-def lista_pacientes(request):
-	posts = Paciente.objects.all()
-	return render(request, 'historial/listar_pacientes.html',{'posts': posts})
-
-
 #--------------------------------------------------------------------------------------
 def registro_doctor(request):
     if request.method == 'POST':
@@ -110,6 +105,16 @@ def editar_enfermedad(request, pk):
         formulario = EnfermedadForm(instance=post)
     return render(request, 'historial/editar_enfermedad.html', {'formulario': formulario})
 
+#----------------Pacientes-------------------------
+#doctor_logueado=Doctor.objects.get(usuario_doctor=request.user)
+#cons = Consulta.objects.filter(doctor=doctor_logueado).values('doctor__nombre','doctor__apellido','paciente__nombre','paciente__apellido','enfermedad__nombre','descripcion_padecimiento','fecha_padecimiento','tratamiento','pk').order_by('pk')
+#para hacer el filtro por nombre y apellido, sería algo como: objects.filter(doctor__nombre__icontains=variable_nombre,doctor__apellido__icontains=variable_apellido)
+#return render(request, 'historial/lista_consultas.html', {'cons': cons})
+
+def lista_pacientes(request):
+        postsp = Paciente.objects.all()
+        #postsp = Paciente.objects.values('paciente__nombre','paciente__apellido','enfermedad__nombre').order_by('paciente__nombre')
+        return render(request, 'historial/listar_pacientes.html',{'postsp': postsp})
 
 #-------Nuevo Paciente---------------------
 def nuevo_paciente(request):
@@ -127,8 +132,8 @@ def nuevo_paciente(request):
 
 #-------------------detalle paciente
 def detalle_paciente(request, pk):
-        post = get_object_or_404(Paciente, pk=pk)
-        return render(request, 'historial/detalle_paciente.html', {'Paciente': post})
+        postp = get_object_or_404(Paciente, pk=pk)
+        return render(request, 'historial/detalle_paciente.html', {'Paciente': postp})
 
 #----------------editar paciente
 def editar_paciente(request, pk):
@@ -137,11 +142,11 @@ def editar_paciente(request, pk):
         formulario = PacienteForm(request.POST, instance=post)
         if formulario.is_valid():
             post = formulario.save(commit=False)
-            post.paciente = request.user
+            #post.paciente = request.user
             post.save()
-            return redirect('blog.views.detalle_paciente', pk=post.pk)
+            return redirect('historial.views.detalle_paciente', pk=post.pk)
     else:
-        formulario = PostearForm(instance=post)
+        formulario = PacienteForm(instance=post)
     return render(request, 'historial/editar_paciente.html', {'formulario': formulario})
 
 

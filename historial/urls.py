@@ -14,11 +14,12 @@ urlpatterns = [
         url(r'^nuevaenfermedad/$', views.nueva_enfermedad, name='EnfermedadN'),
         url(r'^nuevopaciente/$', views.nuevo_paciente, name='PacienteN'),
         url(r'^nuevaconsulta/$', views.consulta_nueva, name='ConsultaN'),
-        url(r'^listapacientes/$', views.lista_pacientes, name='PacienteL'),
 
+        url(r'^listapacientes/$', views.lista_pacientes, name='PacienteL'),
+        url(r'^postp/(?P<pk>[0-9]+)/$', views.detalle_paciente),
+        url(r'^postp/(?P<pk>[0-9]+)/edit/$', views.editar_paciente, name='editar_paciente'),
 
         url(r'^listaenfermedades/$', views.lista_enfermedades, name='EnfermedadesL'),
         url(r'^post/(?P<pk>[0-9]+)/$', views.detalle_enfermedad),
-        #url(r'^nuevoconsulta/$', views.nuevo_paciente, name='ConsultaN'),
         url(r'^post/(?P<pk>[0-9]+)/edit/$', views.editar_enfermedad, name='editar_enfermedad'),
-    ]
+]
