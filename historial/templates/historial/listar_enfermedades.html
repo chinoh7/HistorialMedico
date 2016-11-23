@@ -1,0 +1,12 @@
+{% extends 'historial/base.html' %}
+
+ {% block content %}
+     {% for Enfermedad in posts %}
+          <div class="post">
+              <div class="date">
+                {{ Enfermedad.nombre}}
+               </div>
+                 <h1><a href="{% url 'historial.views.detalle_enfermedad' pk=Enfermedad.pk%}">{{ Enfermedad.nombre }}</a></h1>
+              </div>
+                {% endfor %}
+{% endblock content %}

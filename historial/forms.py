@@ -1,6 +1,7 @@
 from django import forms
 from .models import Paciente, Doctor, Enfermedad, Consulta
-
+from django.contrib.admin import widgets
+from django.forms import extras
 
 class Form_NuevoDoctor(forms.ModelForm):
     def __init__(self, *args, **kwargs):  #este codigo hace que el codigo de producto no sea necesario, así no se tiene un error de validación al no enviarlo
@@ -62,6 +63,10 @@ class ConsultaForm(forms.ModelForm):
     class Meta:
         model = Consulta
         fields = ('paciente', 'doctor', 'enfermedad','descripcion_padecimiento','fecha_padecimiento','tratamiento')
+        widgets =  {
+        'fecha_padecimiento' : widgets.AdminDateWidget()
+        }
+
 #Redefinimos que control (widget) vamos a mostrar para ingresar los actores.
 #Cuando el modelo es Many To Many, por defecto se usa un lisbotx multiseleccionable.
 def __init__ (self, *args, **kwargs):
@@ -69,7 +74,7 @@ def __init__ (self, *args, **kwargs):
         self.fields["consultas"].queryset = Doctor.objects.all()
         self.fields["consultas"].queryset = Paciente.objects.all()
         self.fields["consultas"].queryset = Enfermedad.objects.all()
-        self.fields["doctore  "].widget = forms.widgets.CheckboxSelectMultiple()
+        self.fields["doctor"].widget = forms.widgets.CheckboxSelectMultiple()
 #Podemos usar un texto de ayuda en el widget
         self.fields["consultas"].help_text = "Ingrese los Actores que participaron en la película"
 #En este caso le indicamos que nos muestre todos los actores, pero aquí podríamos filtrar datos si fuera necesario

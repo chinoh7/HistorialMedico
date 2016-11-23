@@ -1,0 +1,11 @@
+{% extends 'historial/base.html' %}
+
+  {% block content %}
+      <div class="date">
+      {% if Enfermedad.nombre %}
+          {{ Enfermedad.nombre}}
+      {% endif %}
+      <a class="btn btn-default" href="{% url 'editar_enfermedad' pk=Enfermedad.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+      </div>
+      <h1>{{ Enfermedad.nombre }}</h1>
+  {% endblock %}

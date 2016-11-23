@@ -11,9 +11,3 @@
          </div>
                 {% endfor %}
 {% endblock content %}
-
-nombre    = models.CharField(max_length=60)
-apellido = models.CharField(max_length=50)
-fecha_nacimiento = models.DateField()
-enfermedades = models.ManyToManyField(Enfermedad, through='Padecimiento')
-def __str__(self):

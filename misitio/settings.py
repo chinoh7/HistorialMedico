@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 
+import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-MEDIA_ROOT = PROJECT_ROOT + '/archivos/'
-MEDIA_URL = '/archivos/'  #put whatever you want that when url is rendered it will be /archivos_varios/imagename.jpg
 
+MEDIA_ROOT = PROJECT_ROOT + '/archivos/'
+MEDIA_URL = '/archivos/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/

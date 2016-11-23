@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Doctor, Enfermedad
 
 from django.contrib import messages
@@ -76,6 +76,13 @@ def registro_doctor(request):
     return render(request, 'historial/doctor.html', {'form': form, 'form_usuario':form_usuario,'errores':var_error})
 
 #------------Nueva Enfermedad--------------------------------
+def lista_enfermedades(request):
+	posts = Enfermedad.objects.all()
+	return render(request, 'historial/listar_enfermedades.html',{'posts': posts})
+
+def detalle_enfermedad(request, pk):
+        post = get_object_or_404(Enfermedad, pk=pk)
+        return render(request, 'historial/detalle_enfermedad.html', {'Enfermedad': post})
 
 def nueva_enfermedad(request):
     if request.method == "POST":
@@ -84,10 +91,25 @@ def nueva_enfermedad(request):
             post = formulario.save(commit=False)
             post.save()
             messages.add_message(request, messages.SUCCESS, 'Enfermedad Guardada Exitosamente')
-            #return redirect('historial/lista_consultas.html', pk=post.pk)
+            return redirect('historial.views.lista_enfermedades', pk=post.pk)
     else:
         formulario = EnfermedadForm()
     return render(request, 'historial/enfermedad_editar.html', {'formulario': formulario})
+
+
+def editar_enfermedad(request, pk):
+    post = get_object_or_404(Enfermedad, pk=pk)
+    if request.method == "POST":
+        formulario = EnfermedadForm(request.POST, instance=post)
+        if formulario.is_valid():
+            post = formulario.save(commit=False)
+            #post.autor = request.user
+            post.save()
+            return redirect('historial.views.detalle_enfermedad', pk=post.pk)
+    else:
+        formulario = EnfermedadForm(instance=post)
+    return render(request, 'historial/editar_enfermedad.html', {'formulario': formulario})
+
 
 #-------Nuevo Paciente---------------------
 def nuevo_paciente(request):
@@ -103,6 +125,11 @@ def nuevo_paciente(request):
         formulario = PacienteForm()
     return render(request, 'historial/ingresar_paciente.html', {'formulario': formulario})
 
+#-------------------detalle paciente
+def detalle_paciente(request, pk):
+        post = get_object_or_404(Paciente, pk=pk)
+        return render(request, 'historial/detalle_paciente.html', {'Paciente': post})
+
 #----------------editar paciente
 def editar_paciente(request, pk):
     post = get_object_or_404(Paciente, pk=pk)
@@ -110,12 +137,12 @@ def editar_paciente(request, pk):
         formulario = PacienteForm(request.POST, instance=post)
         if formulario.is_valid():
             post = formulario.save(commit=False)
-            post.autor = request.user
+            post.paciente = request.user
             post.save()
-            return redirect('blog.views.lista_pacientes', pk=post.pk)
+            return redirect('blog.views.detalle_paciente', pk=post.pk)
     else:
         formulario = PostearForm(instance=post)
-    return render(request, 'blog/editar_articulo.html', {'formulario': formulario})
+    return render(request, 'historial/editar_paciente.html', {'formulario': formulario})
 
 
 
